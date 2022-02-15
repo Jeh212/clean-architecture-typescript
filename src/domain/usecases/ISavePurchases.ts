@@ -1,13 +1,11 @@
-interface ISavePurchase {
+export interface ISavePurchase {
   save: (purchases: ISavePurchase.Params[]) => Promise<void>;
 }
 
-namespace ISavePurchase {
+export namespace ISavePurchase {
   export type Params = {
     id: string;
-    date: string;
+    date: Date;
     value: number;
   };
 }
-
-export { ISavePurchase };
