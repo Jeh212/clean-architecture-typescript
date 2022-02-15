@@ -1,5 +1,6 @@
 interface ICacheStore {
-  delete: (key: string) => void;
+  delete: (deleteKey: string) => void;
+  insert: (insertKey: string) => void;
 }
 
 export { ICacheStore };
