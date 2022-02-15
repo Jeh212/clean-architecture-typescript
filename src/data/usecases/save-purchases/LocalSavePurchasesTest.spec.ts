@@ -28,6 +28,13 @@ describe("LocalSavePurchasesTest", () => {
           throw new Error();
         });
     }
+    simulateInsertError(): void {
+      jest
+        .spyOn(CacheStoreSpy.prototype, "insert")
+        .mockImplementationOnce(() => {
+          throw new Error();
+        });
+    }
   }
 
   type SutTypes = {
@@ -85,5 +92,15 @@ describe("LocalSavePurchasesTest", () => {
     expect(cacheStore.deleteCallsCount).toBe(1);
     expect(cacheStore.insertKey).toBe("purchase");
     expect(cacheStore.insertValues).toEqual(purchases);
+  });
+  test("It should throw if insert throws", () => {
+    const { sut, cacheStore } = makeSut();
+    const purchases = mockPurchases();
+
+    cacheStore.simulateInsertError();
+
+    const promise = sut.save(purchases);
+
+    expect(cacheStore.insertValues).rejects.toThrow(promise);
   });
 });
