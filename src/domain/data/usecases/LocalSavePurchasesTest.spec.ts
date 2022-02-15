@@ -19,16 +19,30 @@ describe("LocalSavePurchasesTest", () => {
     }
   }
 
-  test("It should not delete cache on sut.init", () => {
+  type SutTypes = {
+    sut: LocalSavePurchases;
+    cacheStore: CacheStoreSpy;
+  };
+
+  const makeSut = (): SutTypes => {
     const cacheStore = new CacheStoreSpy();
+    const sut = new LocalSavePurchases(cacheStore);
+    return { sut, cacheStore };
+  };
+  test("It should not delete cache on sut.init", () => {
+    const { cacheStore } = makeSut();
     new LocalSavePurchases(cacheStore);
 
     expect(cacheStore.deleteCallsCount).toBe(0);
   });
 
   test("It should delete old cache on sut.save", async () => {
-    const cacheStore = new CacheStoreSpy();
-    const sut = new LocalSavePurchases(cacheStore);
+    const { sut, cacheStore } = makeSut();
+    await sut.save();
+    expect(cacheStore.deleteCallsCount).toBe(1);
+  });
+  test("It should delete old cache on sut.save", async () => {
+    const { cacheStore, sut } = makeSut();
     await sut.save();
     expect(cacheStore.deleteCallsCount).toBe(1);
   });
