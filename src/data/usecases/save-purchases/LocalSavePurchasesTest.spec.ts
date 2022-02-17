@@ -1,6 +1,7 @@
 import { ICacheStore } from "@/data/protocols/cache";
+import { mockPurchases } from "@/data/tests";
 import { LocalSavePurchases } from "@/data/usecases/save-purchases/LocalSavePurchases";
-import { ISavePurchase } from "@/domain";
+import { ISavePurchase } from "@/domain/usecases";
 describe("LocalSavePurchasesTest", () => {
   class CacheStoreSpy implements ICacheStore {
     deleteCallsCount = 0;
@@ -48,19 +49,6 @@ describe("LocalSavePurchasesTest", () => {
     return { sut, cacheStore };
   };
 
-  const mockPurchases = (): ISavePurchase.Params[] => [
-    {
-      id: "1",
-      date: new Date(),
-      value: 50,
-    },
-    {
-      id: "2",
-      date: new Date(),
-      value: 70,
-    },
-  ];
-
   test("It should not delete cache on sut.init", () => {
     const { cacheStore } = makeSut();
     new LocalSavePurchases(cacheStore);
@@ -93,14 +81,13 @@ describe("LocalSavePurchasesTest", () => {
     expect(cacheStore.insertKey).toBe("purchase");
     expect(cacheStore.insertValues).toEqual(purchases);
   });
-  test("It should throw if insert throws", () => {
+  test("It should throw if insert throws", async () => {
     const { sut, cacheStore } = makeSut();
-    const purchases = mockPurchases();
 
     cacheStore.simulateInsertError();
 
-    const promise = sut.save(purchases);
+    const promise = await sut.save(mockPurchases());
 
-    expect(cacheStore.insertValues).rejects.toThrow(promise);
+    expect(promise).rejects.toThrow();
   });
 });
