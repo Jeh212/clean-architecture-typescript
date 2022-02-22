@@ -1,21 +1,21 @@
 import { CacheStoreSpy, mockPurchases } from "@/data/tests";
-import { LocalSavePurchases } from "@/data/usecases/save-purchases/LocalSavePurchases";
+import { LocalLoadPurchases } from "@/data/usecases/save-purchases/LocalLoadPurchases";
 describe("LocalSavePurchasesTest", () => {
   type SutTypes = {
-    sut: LocalSavePurchases;
+    sut: LocalLoadPurchases;
     cacheStore: CacheStoreSpy;
   };
 
   const makeSut = (timestamp = new Date()): SutTypes => {
     const cacheStore = new CacheStoreSpy();
-    const sut = new LocalSavePurchases(cacheStore, timestamp);
+    const sut = new LocalLoadPurchases(cacheStore, timestamp);
     return { sut, cacheStore };
   };
 
   test("It should not delete or insert cache on sut.init", () => {
     const timestamp = new Date();
     const { cacheStore } = makeSut();
-    new LocalSavePurchases(cacheStore, timestamp);
+    new LocalLoadPurchases(cacheStore, timestamp);
 
     expect(cacheStore.messages).toEqual([]);
   });
