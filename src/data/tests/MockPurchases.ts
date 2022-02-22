@@ -1,5 +1,5 @@
 import { ISavePurchase } from "@/domain/usecases";
-import faker from "faker";
+const faker = require("faker");
 
 export const mockPurchases = (): ISavePurchase.Params[] => [
   {

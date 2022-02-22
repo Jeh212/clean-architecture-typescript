@@ -1,5 +1,5 @@
 import { ISavePurchase } from "@/domain/usecases";
-import { ICacheStore } from "../protocols/cache";
+import { ICacheStore } from "../protocols/cache/ICacheStore";
 
 export class CacheStoreSpy implements ICacheStore {
   messages: Array<CacheStoreSpy.Message> = [];

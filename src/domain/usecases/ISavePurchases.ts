@@ -1,11 +1,9 @@
+import { PurchaseModel } from "../models";
+
 export interface ISavePurchase {
-  save: (purchases: ISavePurchase.Params[]) => Promise<void>;
+  save: (purchases: ISavePurchase.Result[]) => Promise<void>;
 }
 
 export namespace ISavePurchase {
-  export type Params = {
-    id: string;
-    date: Date;
-    value: number;
-  };
+  export type Result = PurchaseModel;
 }
